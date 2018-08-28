@@ -39,10 +39,28 @@ The secrets can also be set with environment variables, see the help for more de
 
 I personaly use cron to start this program so as I want to keep the latest timestamp received from the API, I store it by default in `/tmp/waqi_last` (you can change it through a command line parameter).
 
+## Docker
+
+I added a sample Dockerfile, I personaly use it with a `docker-compose.yml` like this one :
+
+```yml
+version: '3'
+
+services:
+  waqi:
+    build: .
+    image: waqi2mqtt-python3-cron:latest
+    restart: always
+    environment:
+      WAQI_API_KEY: YOUR_API_KEY
+      WAQI_CITY_ID: "YOUR_CITY_ID_WITH_THE_@"
+      CRON_STRINGS: "09 * * * * waqi2MQTT.py -m localhost -v"
+      CRON_LOG_LEVEL: 8
+```
+
 # Limits
 
-None, I hope at least ;).
-
+None, I hope at least ;). I had to adjust the timestamp provided, it seems to fit with my locale (France) but it may need some additional work. 
 
 # License
 
