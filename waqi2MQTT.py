@@ -132,7 +132,15 @@ parser.add_argument('-v', '--verbose', dest='verbose', action="store_true", defa
 args = parser.parse_args()
 verbose = args.verbose;
 
-status, data = getWaqi(args.city, args.waqiApiKey)
+maxRetry = 3
+while maxRetry > 0:
+  status, data = getWaqi(args.city, args.waqiApiKey)
+  if status:
+    break
+  time.sleep(7)
+  debug ("Retrying ...")
+  maxRetry -= 1
+
 jsonString = json.dumps(data)
 if status:
   debug("Success with message <{0}>".format(jsonString))
