@@ -48,7 +48,7 @@ version: '3'
 
 services:
   waqi:
-    build: .
+    build: https://github.com/seblucas/waqi2MQTT.git
     image: waqi2mqtt-python3-cron:latest
     restart: always
     environment:
