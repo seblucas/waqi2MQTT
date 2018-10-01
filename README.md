@@ -35,6 +35,38 @@ and then a real command to add to your crontab :
 
 The secrets can also be set with environment variables, see the help for more detail.
 
+## Help
+
+```bash
+/ # waqi2MQTT.py --help
+usage: waqi2MQTT.py [-h] [-a WAQIAPIKEY] [-c CITY] [-m HOST] [-n]
+                    [-o PREVIOUSFILENAME] [-t TOPIC] [-T TOPIC] [-v]
+
+Read current air quality, temperature and humidity from waqi.info and send
+them to a MQTT broker.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -a WAQIAPIKEY, --waqi-api-key WAQIAPIKEY
+                        WAQI API Key. (default: None)
+  -c CITY, --city CITY  WAQI city ID. (default: None)
+  -m HOST, --mqtt-host HOST
+                        Specify the MQTT host to connect to. (default:
+                        127.0.0.1)
+  -n, --dry-run         No data will be sent to the MQTT broker. (default:
+                        False)
+  -o PREVIOUSFILENAME, --last-time PREVIOUSFILENAME
+                        The file where the last timestamp coming from WAQI API
+                        will be saved (default: /tmp/waqi_last)
+  -t TOPIC, --topic TOPIC
+                        The MQTT topic on which to publish the message (if it
+                        was a success). (default: sensor/outdoor)
+  -T TOPIC, --topic-error TOPIC
+                        The MQTT topic on which to publish the message (if it
+                        wasn't a success). (default: error/sensor/outdoor)
+  -v, --verbose         Enable debug messages. (default: False)
+```
+
 ## Other things to know
 
 I personaly use cron to start this program so as I want to keep the latest timestamp received from the API, I store it by default in `/tmp/waqi_last` (you can change it through a command line parameter).
