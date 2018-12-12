@@ -94,6 +94,8 @@ def getWaqi(city, apiKey):
       return (False, {"time": tstamp, "message": "WAQI data not well formed", "data": data})
     if data['status'] != 'ok':
       return (False, {"time": tstamp, "message": "WAQI internal API Error", "data": data})
+    if not 'h' in data['data']['iaqi']:
+      return (False, {"time": tstamp, "message": "WAQI's response incomplete", "data": data})
     tz = data['data']['time']['tz']
     diff = int(tz[1:3]) * 3600
     if tz[0] == "+":
