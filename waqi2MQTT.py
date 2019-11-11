@@ -94,21 +94,23 @@ def getWaqi(city, apiKey):
       return (False, {"time": tstamp, "message": "WAQI data not well formed", "data": data})
     if data['status'] != 'ok':
       return (False, {"time": tstamp, "message": "WAQI internal API Error", "data": data})
-    if (not 'h' in data['data']['iaqi'] or
-       not 't' in data['data']['iaqi'] or
-       not 'p' in data['data']['iaqi'] or
-       not 'pm10' in data['data']['iaqi'] or
-       not 'pm25' in data['data']['iaqi']):
+    if not 't' in data['data']['iaqi']:
       return (False, {"time": tstamp, "message": "WAQI's response incomplete", "data": data})
     tz = data['data']['time']['tz']
     diff = int(tz[1:3]) * 3600
     if tz[0] == "+":
       diff *= -1
-    newObject = {"time": data['data']['time']['v']+diff, "temp": data['data']['iaqi']['t']['v'],
-                                                    "hum": data['data']['iaqi']['h']['v'],
-                                                    "pm10": data['data']['iaqi']['pm10']['v'],
-                                                    "pm25": data['data']['iaqi']['pm25']['v'],
-                                                    "pres": data['data']['iaqi']['p']['v']}
+    newObject = {"time": data['data']['time']['v']+diff, "temp": data['data']['iaqi']['t']['v']}
+
+    if 'h' in data['data']['iaqi']:
+      newObject["hum"] = data['data']['iaqi']['h']['v']
+    if 'p' in data['data']['iaqi']:
+      newObject["pres"] = data['data']['iaqi']['p']['v']
+    if 'pm10' in data['data']['iaqi']:
+      newObject["pm10"] = data['data']['iaqi']['pm10']['v']
+    if 'pm25' in data['data']['iaqi']:
+      newObject["pm25"] = data['data']['iaqi']['pm25']['v']
+    
     return (True, newObject)
   except requests.exceptions.RequestException as e:
     return (False, {"time": tstamp, "message": "WAQI not available : " + str(e)})
